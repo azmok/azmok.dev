@@ -1,0 +1,6 @@
+# Ignore all
+/*
+
+# Exeption patterns
+!.gitignore
+!/wordpress/wp-content/*
