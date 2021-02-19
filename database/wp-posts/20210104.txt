@@ -1,0 +1,151 @@
+<h2 id="-">初めに(用語について)</h2>
+<div class="sidenote">
+   hook(引っ掛ける装置)を、以下では"フック"ではなく「ホック」と呼んでいます。和製英語のフックという言い方の由来は、おそらくイギリス英語の発音からだと推察します。アメリカ英語では「ホック」聞こえるので、そちらに統一していこうと思います??w
+<a href="https://dictionary.cambridge.org/dictionary/english/hook">hook ---Cambridge Dictionary</a>
+
+</div>
+<h2 id="-hook-">ホック(hook)概要</h2>
+Web上で見かける<b>ホック</b>という用語は、多くの場合、<b>ホッキングシステム</b>の事を指しています。ですので、先ずはホッキングシステムの解説から。
+
+<b>ホッキングシステム</b>とは、ソフトウェアのコード根幹を書き直す事なく、後から処理の追加・削除を可能にするシステムの事です。そして、ホッキングシステム使って、後から処理の追加・削除する事を<b>ホッキング</b>と言います。ハンガー等を掛ける「ホック(hook)」と似た仕組みである事からそう呼ばれている。
+
+例えば WordPress を例に見てみましょう。プログラムの処理過程をいくつかに区分し、「任意のポイント」に命名したとします。
+
+<pre><code class="lang-php">( phpの読込 → )
+
+                               // (`任意時点の名称`)
+   → WordPress 読込開始          // (`muplugins_loaded`)
+      → テーマ 立ち上げ完了       // (`after_setup_theme`)
+      → WordPressコア 読込完了   // (`init`)
+      → ウェジェット 読込完了     // (`wedgets_init`)
+   → WordPress 読込完了
+   → …
+   → …
+</code></pre>
+
+ホッキングシステムが採用されているソフトウェアでは、上記のように、プログラム処理時の「任意時点(例:<code>muplugins_loaded</code>, <code>init</code> 等)」に予め名称が付けられています。そして、それらの時点に関数を付け加え実行したり、あるいは、付け加えた関数を削除したりする事を<b>ホッキング</b>と言います。
+
+そして、上記の各任意時点の事を<b>ホック</b>と言います。例えば、上記の例だと、<code>WordPress コア 読込完了</code>時のポイントを<b><code>init</code>ホック</b>と言い、<code>init</code>の事を<b>タグ名</b>と言います。
+
+ホッキングシステムをイメージで表すなら、WordPress のプログラムの処理過程をタイムライン図にし、重要な各ポイントに、<a href="https://www.google.com/search?q=hook+hanger&amp;tbm=isch&amp;ved=2ahUKEwiXmaqsioXuAhWjJqYKHXA2DxMQ2-cCegQIABAA&amp;oq=hook+hanger&amp;gs_lcp=CgNpbWcQAzICCAAyAggAMgIIADICCAAyAggAMgIIADICCAAyAggAMgIIADICCAA6BggAEAQQGDoECAAQQzoFCAAQsQM6BwgAELEDEENQ3ogEWM-eBGCeoQRoBHAAeAKAAf8CiAG6E5IBBzIuMC42LjOYAQCgAQGqAQtnd3Mtd2l6LWltZ8ABAQ&amp;sclient=img&amp;ei=D4L0X9fVBKPNmAXw7LyYAQ&amp;bih=820&amp;biw=1440&amp;client=safari">ハンガー用ホック(フック)</a>を貼り付ける感じでしょうか。。
+
+
+<h2 id="ソフトウェア製作時に「ホックポイント」が規定される">ホックはソフトウェア製作時に規定される</h2>
+上記のWordPressのホック郡を例に取ると、各ホックを作る場所は、どの時点をホックとするか、WordPressのオリジナル開発者がソースコードを書く際に予め規定し実装しています。
+
+ですので、通常、開発者がホックを利用して後から処理を追加する際は、予め規定されたホック郡を利用する事になります。
+
+また、WordPressの様に、<strong><u class="wavy">ホック自体を後から</u>ソフトウェアの処理過程内に付け加える事も出来る場合もあります(カスタムホック)。</strong>
+
+
+<h2>⚠︎多くの解説で「ホック」という用語が指しているものは、大抵「ホッキングシステム」の事</h2>
+
+慣習的に、ホッキングシステムの事も略して「ホック」と呼ばれています。ですので、特に初学者の場合、Webや書籍でホッキングシステムの解説を読む場合、「ホック」という用語に要注意です。
+
+理由は、「ホック」が、"ホッキングシステム"の事を指しているのか、"ホック"の事を指しているのかが明確に書かれておらず、それゆえに自分の脳内で明確にして読み進めていかないと、かなり混乱するからです。実は私は、最初かなりそれに混乱させられました…( ¯∀¯٥)w
+
+
+
+<h2>ホッキングシステムの起源</h2>
+ホッキングシステムは PHP が起源ではなく、もっと古い言語からあったようです。
+StackOverflow にホッキングシステム(ホック))に関する分かりやすい回答があったので、ここに引用しておきます。
+<blockquote>
+   <cite>
+<a href="https://stackoverflow.com/questions/467557/what-is-meant-by-the-term-hook-in-programming">What is meant by the term “hook” in programming? —StackOverflow</a>
+</cite>
+<div class="question"></div>
+<div class="answers">
+
+A hook is functionality provided by software for users of that software to have their own code called under certain circumstances. That code can augment or replace the current code.
+
+In the olden days when computers were truly personal and viruses were less prevalent (I'm talking the '80's), it was as simple as patching the operating system software itself to call your code. I remember writing an extension to the Applesoft BASIC language on the Apple II which simply hooked my code into the BASIC interpreter by injecting a call to my code before any of the line was processed.
+
+Some computers had pre-designed hooks, one example being the I/O stream on the Apple II. It used such a hook to inject the whole disk sub-system (Apple II ROMs were originally built in the days where cassettes were the primary storage medium for PCs). You controlled the disks by printing the ASCII code 4 (CTRL-D) followed by the command you wanted to execute then a CR, and it was intercepted by the disk sub-system, which had hooked itself into the Apple ROM print routines.
+
+So for example, the lines:
+<pre><code>PRINT CHR(4);"CATALOG"
+      PRINT CHR(4);"IN#6"</code></pre>
+would list the disk contents then re-initialize the machine. This allowed such tricks as protecting your BASIC programs by setting the first line as:
+<pre><code>123 REM XIN#6</code></pre>
+then using POKE to insert the CTRL-D character in where the X was. Then, anyone trying to list your source would send the re-initialize sequence through the output routines where the disk sub-system would detect it.
+
+That's often the sort of trickery we had to resort to, to get the behavior we wanted.
+
+Nowadays, with the operating system more secure, it provides facilities for hooks itself, since you're no longer supposed to modify the operating system "in-flight" or on the disk.
+
+They've been around for a long time. Mainframes had them (called exits) and a great deal of mainframe software uses those facilities even now. For example, the free source code control system that comes with z/OS (called SCLM) allows you to entirely replace the security subsystem by simply placing your own code in the exit.
+
+edited Dec 8 '09 at 23:47
+answered Jan 22 '09 at 0:12 by <a href="https://stackoverflow.com/users/14860/paxdiablo">paxdiablo</a>
+
+</div></blockquote>
+<h2 id="-">実装</h2>
+仕組みを理解するため、簡単なホックキングシステムを JavaScript で書いてみました。PHP ではなく js でゴメリンコ…( ¯∀¯٥)?w
+<pre><code class="lang-js"><span class="hljs-meta">"use strict"</span>;
+
+<span class="hljs-comment">// ユーテリティ関数(コンソール出力簡便化)</span>
+<span class="hljs-keyword">const</span> _ = <span class="hljs-function">(<span class="hljs-params">...args</span>) =&gt;</span> <span class="hljs-built_in">console</span>.log(...args);
+
+<span class="hljs-comment">// ----- ホック概要 ------</span>
+<span class="hljs-comment">// (1) ホック郡にはアクション・フィルター2種類ありますが、仕組みがよりシンプルな</span>
+<span class="hljs-comment">// 'アクション'のみの実装です</span>
+<span class="hljs-comment">// (2) ホッキングにおいて、変数名・関数名をWordPress風にしています</span>
+<span class="hljs-comment">// (3) 仕組みを理解するため、add_action(), do_action() は簡易化されています。</span>
+
+<span class="hljs-keyword">const</span> actionTags = {
+  <span class="hljs-attr">init</span>: [],
+};
+
+<span class="hljs-keyword">const</span> add_action = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">tagName, callback, priority = <span class="hljs-number">10</span>, argsNum = <span class="hljs-number">0</span></span>) </span>{
+  <span class="hljs-comment">//###  Already tagName exists in 'actionTags'</span>
+  <span class="hljs-keyword">if</span> (actionTags[tagName]) {
+    _(<span class="hljs-string">`"<span class="hljs-subst">${tagName}</span>" already had been registered actionTags`</span>);
+
+    <span class="hljs-comment">//###  No tagName exists in 'actionTags'</span>
+  } <span class="hljs-keyword">else</span> {
+    _(<span class="hljs-string">`New <span class="hljs-subst">${tagName}</span>:: Registered!`</span>);
+  }
+
+  <span class="hljs-comment">//## append callback to array of the tag</span>
+  actionTags[tagName].push(callback);
+  _(
+    <span class="hljs-string">`"<span class="hljs-subst">${tagName.toUpperCase()}</span>"&lt;----Hooked----"<span class="hljs-subst">${callback.name.toUpperCase()}</span>"`</span>
+  );
+};
+
+<span class="hljs-keyword">const</span> do_action = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">tagName, ...args</span>) </span>{
+  <span class="hljs-keyword">if</span> (actionTags[tagName]) {
+    <span class="hljs-keyword">const</span> arr = actionTags[tagName];
+    _(<span class="hljs-string">`"<span class="hljs-subst">${tagName.toUpperCase()}</span>"&lt;----- hooks Starts------`</span>);
+    arr.map(<span class="hljs-function">(<span class="hljs-params">fn, i</span>) =&gt;</span> {
+      _(<span class="hljs-string">`&lt;----- Hooking function ----"<span class="hljs-subst">${fn.name.toUpperCase()}</span>" called`</span>);
+      fn(...args);
+    });
+  }
+};
+
+<span class="hljs-comment">// 任意のホックにホッキングし、実行するための後掛け関数</span>
+<span class="hljs-keyword">const</span> foo = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> _(<span class="hljs-string">"inside foo() body"</span>);
+
+_(<span class="hljs-string">"===== BEFORE  add_action(...) ====="</span>);
+<span class="hljs-comment">// initホックにfoo関数をホッキング</span>
+add_action(<span class="hljs-string">"init"</span>, foo);
+
+<span class="hljs-comment">// initホックを開始(initにホッキングされた関数(群)が順番に実行される)</span>
+_(<span class="hljs-string">"===== BEFORE  do_action('...') ====="</span>);
+do_action(<span class="hljs-string">"init"</span>);
+
+<span class="hljs-comment">// メモ</span>
+<span class="hljs-comment">// add_action()で、後掛け関数をホッキングする場合、後掛け関数の仮引数は何で決まるかと言うと、do_action()の`fn(...args)`で決定される。</span>
+<span class="hljs-comment">// WordPressでは、ホック名(タグ名)毎に`do_action('タグ名', ...args)`の使用書があり、仮引数`...args`のタイプ・数がホック毎に異なる。`do_action('ホッキングしたいホック名', ...)`の使用書参照されたし。</span>
+</code></pre>
+<h2>最後に</h2>
+WordPress や React.js のホックの解説は、ホッキングシステムの基礎概念についてあまり触れられてないように感じ、またそのため理解に苦労しました…(εិдεិ ;)՞ ですので、初学者にも理解できるような分かりやすい説明を目指し、ここに解説してみました。いかがだったでしょうか…|◟ω･⑉)
+<h2 id="-">参考文献</h2>
+<a href="https://developer.wordpress.org/plugins/hooks/">https://developer.wordpress.org/plugins/hooks/</a>
+<a href="https://developer.wordpress.org/plugins/hooks/actions/">https://developer.wordpress.org/plugins/hooks/actions/</a>
+<a href="https://developer.wordpress.org/reference/functions/add_action/">https://developer.wordpress.org/reference/functions/add_action/</a>
+<a href="https://developer.wordpress.org/reference/functions/do_action/">https://developer.wordpress.org/reference/functions/do_action/</a>
+<a href="https://developer.wordpress.org/reference/hooks/init/">https://developer.wordpress.org/reference/hooks/init/</a>
+
+<a href="http://rachievee.com/the-wordpress-hooks-firing-sequence/">http://rachievee.com/the-wordpress-hooks-firing-sequence/</a>

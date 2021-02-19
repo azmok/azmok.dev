@@ -1,0 +1,20 @@
+WordPress database error <div style="clear:both">&nbsp;</div><div class="queries" style="clear:both; margin_bottom:2px; border: red dotted thin;">Queries made or created this session were<br/>
+	<ol>
+		<li>Raw query:
+UPDATE `wp_options` SET `option_value` = NULL WHERE `option_name` = 'azm_excerptChanger'</li>
+		<li>Rewritten:
+UPDATE wp_options SET option_value = NULL WHERE option_name = 'azm_excerptChanger'</li>
+		<li>With Placeholders:
+UPDATE wp_options SET option_value = NULL WHERE option_name =  :param_0 </li>
+		<li>Prepare:
+UPDATE wp_options SET option_value = NULL WHERE option_name =  :param_0 </li>
+		<li>Executing:
+array (
+  0 => 'azm_excerptChanger',
+)</li>
+	</ol>
+</div><div style="clear:both; margin_bottom:2px; border: red dotted thin;" class="error_message" style="border-bottom:dotted blue thin;">Error occurred at line 692 in Function execute_query. <br/> Error message was: Error while executing query! Error message was: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: wp_options.option_value </div><pre>#0  PDOEngine->get_error_message() called at [/private//wordpress/wp-content/plugins/sqlite-integration/pdodb.class.php:254]
+#1  PDODB->query(UPDATE `wp_options` SET `option_value` = NULL WHERE `option_name` = 'azm_excerptChanger') called at [/private//wordpress/wp-includes/wp-db.php:2314]
+#2  wpdb->update(wp_options, Array ([option_value] => ), Array ([option_name] => azm_excerptChanger)) called at [/private//wordpress/wp-includes/option.php:390]
+#3  update_option(azm_excerptChanger, ) called at [/private//wordpress/wp-admin/options.php:288]
+</pre> for query UPDATE `wp_options` SET `option_value` = NULL WHERE `option_name` = 'azm_excerptChanger' made by update_option, PDODB->query, PDODB->print_error

@@ -1,0 +1,64 @@
+:root{
+   --red: #DE1F1F;
+}
+
+body, html{
+	font-size: 17px;
+	line-height: 1.75;
+	letter-spacing: 0;
+}
+a{
+	text-decoration-color: #4F88E8 !important;
+}
+
+.sidenote {
+	font-size: 0.875rem;
+	font-style: italic;
+  color: #666;
+	line-height: 1.5;
+}
+
+
+
+h1.entry-title,
+.entry-content h2 {
+	font-size: 2.5rem !important;
+}
+.entry-content h2{
+	font-size: 2.2rem !important;
+	margin-top: 2.25em;
+  margin-bottom: 0.1em;
+  font-size: 2rem;
+}
+.entry-content h2 + *{
+   margin-top: 0;
+}
+code:not(pre>code){
+   background: #373737;
+   color: #ddd;
+   padding: 1px 4px;
+   border-radius: 4px;
+}
+
+pre {
+	background: #292620;
+	color: #ccc;
+	overflow-x: auto;
+	padding: 1.2em 1.75em;
+	border-radius: 8px;
+	line-height: 1;
+}
+
+pre > code{
+	font-size: 0.8125rem !important;
+	line-height: 1.6;
+}
+
+img.full-w{
+	display: block;
+	width: 100%;
+	height: auto;
+}
+
+code:not(pre > code){
+	background: #333;

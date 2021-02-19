@@ -1,0 +1,48 @@
+:root{
+   --pink: #c49dad;
+   --blue: #82a8b0;
+}
+
+body{
+   background: #1e1f22;
+   color: #bbb;
+   padding: 6rem 3rem;
+   font-size: 1rem;
+   font-family: sans-serif;
+   line-height: 1.8;
+   letter-spacing: -0.4px;
+}
+a{
+   color: var(--blue);
+}
+pre{
+   overflow-x: auto;
+   background: #010103;
+   color: #bbb;
+   padding: 1.5em 2em;
+}
+code:not(pre>code){
+   background: #373737;
+   color: #ddd;
+   padding: 1px 4px;
+   border-radius: 4px;
+}
+blockquote{
+   padding: 1em;
+   box-shadow: 0 6px 9px 9px rgba(3,10,12,0.3);
+}
+u.wavy{
+   text-decoration-line: solid;
+   text-decoration-color: var(--pink);
+   text-decoration-style: wavy;
+   color: var(--pink);
+   font-style: italic;
+}
+h2{
+   margin-top: 2.25em;
+   margin-bottom: 0;
+   font-size: 2rem;
+}
+h2 + *{
+   margin-top: 0;
+}
