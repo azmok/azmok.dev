@@ -6,16 +6,21 @@
  */
 
  
+##################
+# (Backend)
+# - Registoration(the custom option)
+# - user input, save input to DB
+##################
 
 ### register, render settings title, field
 function render_excerptChanger_title( $args){
   echo "<u><i>current length:</i></u>";
 }
 function render_excerptChanger_field( $args){
-   $val = get_option('azm_excerptChanger');
+   $val = get_option('azmok_excerptChanger');
    $expr = isset( $val ) ? esc_attr( $val ) : "";
-   $html = "<input type='text' placeholder='Enter Length' name='azm_excerptChanger' value='{$expr}' />";
-   
+   $html = "<input type='text' placeholder='Enter Length' name='azmok_excerptChanger' value='{$expr}' />";
+   ##
    // 'name attribute must match against $option_name of 'register_setting($page, $option_name)
    //   because it automatically identify options value and saved to DB, and enable to
    //   use 'get_option()' to retrieve the custome option's value. 
@@ -23,12 +28,12 @@ function render_excerptChanger_field( $args){
    echo $html;
 }
 
-
 function register_excerptChanger(){
-   register_setting('reading', 'azm_excerptChanger');
+   ###  Register custom option
+   register_setting('reading', 'azmok_excerptChanger');
    //                $page   ,  $option_name
    
-   ###  
+   ###  add Section
    add_settings_section(
       'excerptChanger-section', // in HTML, this value used as 'section's id attribute value 
                                 //   In addition, this is used as identifier in PHP.
@@ -41,6 +46,7 @@ function register_excerptChanger(){
                 //   'writing', 'misc', 'options', 'privacy')
    );
    
+   ###  add Field
    add_settings_field(
       'excerptChanger-field',
          
@@ -54,10 +60,14 @@ add_action('admin_init', 'register_excerptChanger');
 
 
 
-###
 
-function azm_chnageExcerptLength( $excerpt ){
-   $optionsLen = get_option('azm_excerptChanger');
+
+##################
+# (Frontend)
+# - chnage excerpt length using DB data(user inputted)
+##################
+function azmok_changeExcerptLength( $excerpt ){
+   $optionsLen = get_option('azmok_excerptChanger');
    $excerptLen = mb_strlen($excerpt);
    
    // echo '<br>$excerpt<br>'.  htmlspecialchars($excerpt);
@@ -82,4 +92,4 @@ function azm_chnageExcerptLength( $excerpt ){
 }
    
    
-add_filter('the_excerpt', 'azm_chnageExcerptLength', 999);
+add_filter('the_excerpt', 'azmok_changeExcerptLength', 999);
