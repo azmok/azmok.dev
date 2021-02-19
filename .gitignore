@@ -4,3 +4,6 @@
 # Exeption patterns
 !.gitignore
 !/wordpress/wp-content/*
+
+# .gitignore pattern
+# If the pattern is '/foo', starting from '/', it means 'mathces foo dirs and files relative to the .gitignore file. If the pattern is 'foo', not starting from '/', it means 'mathces all dirs and files whose name is 'foo' in any depth.
