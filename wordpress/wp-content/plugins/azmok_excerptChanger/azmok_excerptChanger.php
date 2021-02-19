@@ -1,8 +1,8 @@
 <?php
 
 /**
- * Plugin Name: +change excerpt length using built-in 'settings > writing' admin panel
- * Description: ?Echoing Text in Every Pages
+ * Plugin Name: Excerpt Customizer
+ * Description: customize excerpt length and symbol from 'Settings > Reading' in admin dashboard.
  */
 
  
@@ -30,9 +30,8 @@ function render_excerptChanger_lengthField($args){
 
 function render_excerptChanger_symbolField($args){
    $symbol = get_option('azmok_excerptChanger-symbol-field');
-   $expr = isset( $symbol ) ? esc_attr( $symbol ) : "...";
-   $html = "<input type='text' placeholder='Enter 
-      symbol' name='azmok_excerptChanger-symbol-field' value='{$expr}' />";
+   $expr = isset( $symbol ) ? $symbol : "...";
+   $html = "<input type='text' placeholder='Enter symbol' name='azmok_excerptChanger-symbol-field' value='{$expr}' />";
    
    echo $html;
 }
@@ -84,13 +83,10 @@ function register_excerptChanger(){
       'render_excerptChanger_symbolField',
       'reading',
       'azmok_excerptChanger-section'
-   )
+   );
 }
 add_action('admin_init', 'register_excerptChanger');
 
-
-
-function azmok_registerExcerptChanger_
 
 
 ##################
