@@ -74,4 +74,3 @@ function azm_chnageExcerptLength( $excerpt ){
    
 add_filter('the_excerpt', 'azm_chnageExcerptLength', 999);
 
-
