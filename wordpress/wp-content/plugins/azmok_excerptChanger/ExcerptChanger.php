@@ -59,6 +59,16 @@ class Setting{
       return $this;
    }
    
+   function setFieldParent($parent){
+      $this->field->setParentSection($parent);
+      
+      return $this;
+   }
+   
+   function section(){
+      return $this->section;
+   }
+   
    function register(){
       $section = $this->section;
       $field = $this->field;
@@ -68,7 +78,12 @@ class Setting{
          $this->settingName
       );
       
-      if( $this->sectionIsSet ) $section->register();
+      if( $this->sectionIsSet ) {
+         $section->register();
+         
+         // set parent Section for field. If no exist, default 'default' seccion is set.
+         $this->field->setParentSection( $this->section->id() );
+      }
       if( $this->fieldIsSet ) $field->register();
       
       return $this;
@@ -77,13 +92,17 @@ class Setting{
 }
    
 class Section{
-   private $sectionId = "";
+   private $id = "";
    private $txt = "";
    private $renderer = Null;
    private $targetPage = "general";
    
    function __construct($id){
-      $this->sectionId = $id  ."-section";
+      $this->id = $id  ."-section";
+   }
+   
+   function id(){
+      return $this->id;
    }
    
    function setText($txt){
@@ -100,7 +119,7 @@ class Section{
    
    function register(){
       add_settings_section(
-         $this->sectionId,
+         $this->id,
          $this->txt,
          $this->renderer,
          $this->targetPage
@@ -109,20 +128,24 @@ class Section{
 }
 
 class Field{
-   private $fieldId = "";
+   private $id = "";
    private $txt = "";
    private $renderer = Null;
    private $targetPage = "general";
    private $parentSection = "default";
    
    function __construct($id){
-      $this->fieldId = $id;
+      $this->id = $id;
+   }
+   
+   function id(){
+      return $this->id;
    }
    
    function setText($txt){
       $this->txt = $txt;
    }
-   
+
    function setTargetPage($target){
       $this->targetPage = $target;
    }
@@ -137,7 +160,7 @@ class Field{
    
    function register(){
       add_settings_field(
-         $this->fieldId,
+         $this->id,
          $this->txt,
          $this->renderer,
          $this->targetPage,
@@ -148,12 +171,12 @@ class Field{
 
 
 function renderer_section($args){
-  echo "<u><i>current length:</i></u>";
+  //echo "<u><i>current length:</i></u>";
 }
 
 function renderer_length($args){
    $val = get_option('azmok-excerpt-length');
-   $expr = isset( $val ) ? esc_attr( $val ) : 20;
+   $expr = !empty( trim($val) ) ? esc_attr( $val ) : 20;
    $html = "<input type='text' placeholder='Enter Length' name='azmok-excerpt-length' value='{$expr}' />";
    
    echo $html;
@@ -161,7 +184,7 @@ function renderer_length($args){
 
 function renderer_symbol($args){
    $symbol = get_option('azmok-excerpt-symbol');
-   $expr = isset( $symbol ) ? $symbol : "...";
+   $expr = !empty( trim($symbol) ) ? $symbol : "...";
    $html = "<input type='text' placeholder='Enter symbol' name='azmok-excerpt-symbol' value='{$expr}' />";
    
    echo $html;
@@ -169,31 +192,31 @@ function renderer_symbol($args){
 
 
 add_action('admin_init', function(){
-###  length
-$Setting_excerptLen = new Setting('azmok-excerpt-length');
-$Setting_excerptLen
-   ->setTargetPage('reading')
-   ->setSection([
-      "text" => "Current length:",
-      "renderer" => 'renderer_section',
-   ])
-   ->setField([
-      "text" => "Current length:",
-      "renderer" => 'renderer_length',
-   ])
-   ->register();
-
-###  symbol
-$Setting_excerptSym = new Setting('azmok-excerpt-symbol');
-$Setting_excerptSym
-   ->setTargetPage('reading')
-   ->setField([
-      "text" => "Current symbol:",
-      "renderer" => 'renderer_symbol',
-   ])
-   ->register();
-      
-      
+   ###  length
+   $Setting_excerptLen = new Setting('azmok-excerpt-length');
+   $Setting_excerptLen
+      ->setTargetPage('reading')
+      ->setSection([
+         "text" => "Excerpt Settings:",
+         "renderer" => 'renderer_section',
+      ])
+      ->setField([
+         "text" => "Current length:",
+         "renderer" => 'renderer_length',
+      ])
+      ->register();
+   
+   ###  symbol
+   $Setting_excerptSym = new Setting('azmok-excerpt-symbol');
+   $Setting_excerptSym
+      ->setTargetPage('reading')
+      ->setFieldParent( $Setting_excerptLen->section()->id() )
+      ->setField([
+         "text" => "Current symbol:",
+         "renderer" => 'renderer_symbol',
+      ])
+      ->register();
+         
 });
 
 
@@ -203,8 +226,8 @@ $Setting_excerptSym
 # - chnage excerpt length using DB data(user inputted)
 ##################
 function azmok_changeExcerpt( $excerpt ){
-   $length = get_option('azmok-excerpt-length');
-   $symbol = get_option('azmok-excerpt-symbol');
+   $length = get_option('azmok-excerpt-length') ?: 3;
+   $symbol = get_option('azmok-excerpt-symbol') ?: '→';
    
    ###  strip tags
    $tagStripped = preg_replace('~</?.+?>~', "", $excerpt);
@@ -215,7 +238,7 @@ function azmok_changeExcerpt( $excerpt ){
    ###  substringing
    $newExcerpt = mb_substr($sanitizedTxt, 0, $length);
    
-   return "<p>{$newExcerpt}{$symbol}</p>";
+   return "<p>{$newExcerpt}<a href=".  get_post_permalink()  .">{$symbol}</a></p>";
 }
    
 add_filter('the_excerpt', 'azmok_changeExcerpt', 999);
